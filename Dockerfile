@@ -30,13 +30,11 @@ RUN groupmod -g 1000 users \
 WORKDIR $APP_HOME
 
 # Dépendances système (ajout de ca-certificates et curl pour requêtes HTTPS fiables)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apk update && apk add --no-cache \
     ca-certificates \
-    curl \
     libcurl4-openssl-dev \
     libssl-dev \
-    ffmpeg \
- && rm -rf /var/lib/apt/lists/*
+    ffmpeg 
 
 # Dépendances Python
 COPY --chown=app:app requirements.txt .
@@ -54,6 +52,7 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
 
 
 
