@@ -6,17 +6,16 @@ ENV VIRTUAL_ENV=$APP_HOME/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install latest su-exec
-RUN set -ex; \
+RUN apk --no-cache add curl shadow; \
+    set -ex; \
     curl -o /usr/local/bin/su-exec.c https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c; \
     fetch_deps='gcc libc-dev'; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends $fetch_deps; \
+    apk update && apk add --no-cache $fetch_deps; \
     rm -rf /var/lib/apt/lists/*; \
     gcc -Wall /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec; \
     chown root:root /usr/local/bin/su-exec; \
     chmod 0755 /usr/local/bin/su-exec; \
-    rm /usr/local/bin/su-exec.c; \
-    apt-get purge -y --auto-remove $fetch_deps
+    rm /usr/local/bin/su-exec.c;
 
 # Add local user so we don't run as root
 RUN groupmod -g 1000 users \
@@ -31,13 +30,12 @@ RUN groupmod -g 1000 users \
 WORKDIR $APP_HOME
 
 # Dépendances système (ajout de ca-certificates et curl pour requêtes HTTPS fiables)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    ffmpeg \
- && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add --no-cache ca-certificates \
+    #libcurl4-openssl-dev \
+    curl-dev \
+    #libssl-dev \
+    openssl-dev \
+    ffmpeg 
 
 # Dépendances Python
 COPY --chown=app:app requirements.txt .
@@ -55,4 +53,3 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
-
