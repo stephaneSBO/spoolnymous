@@ -1,4 +1,4 @@
-FROM python:3.12-bookworm AS python-builder
+FROM python:3.14.0rc3-alpine3.22 AS python-builder
 
 # Environnement
 ENV APP_HOME=/home/app
@@ -55,3 +55,4 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
