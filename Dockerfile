@@ -31,7 +31,8 @@ WORKDIR $APP_HOME
 
 # Dépendances système (ajout de ca-certificates et curl pour requêtes HTTPS fiables)
 RUN apk update && apk add --no-cache ca-certificates \
-    libcurl4-openssl-dev \
+    #libcurl4-openssl-dev \
+    curl-dev \
     libssl-dev \
     ffmpeg 
 
@@ -51,6 +52,7 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
 
 
 
