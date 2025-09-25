@@ -10,13 +10,12 @@ RUN apk --no-cache add curl; \
     set -ex; \
     curl -o /usr/local/bin/su-exec.c https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c; \
     fetch_deps='gcc libc-dev'; \
-    apk update && apk add $fetch_deps; \
+    apk update && apk add --no-cache $fetch_deps; \
     rm -rf /var/lib/apt/lists/*; \
     gcc -Wall /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec; \
     chown root:root /usr/local/bin/su-exec; \
     chmod 0755 /usr/local/bin/su-exec; \
     rm /usr/local/bin/su-exec.c; \
-    apt-get purge -y --auto-remove $fetch_deps
 
 # Add local user so we don't run as root
 RUN groupmod -g 1000 users \
@@ -55,6 +54,7 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
 
 
 
