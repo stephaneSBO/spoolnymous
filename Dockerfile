@@ -19,9 +19,8 @@ RUN apk --no-cache add curl shadow; \
 
 # Add local user so we don't run as root
 RUN groupmod -g 1000 users \
-    && usermod -u 1000 app \
-#    && useradd -u 1000 -U app \
-#    && usermod -G users app \
+    && useradd -u 1000 -U app \
+    && usermod -G users app \
     && mkdir -p $APP_HOME/static/prints \
     && mkdir -p $APP_HOME/logs \
     && mkdir -p /var/log/flask-app \
@@ -52,6 +51,7 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
 
 
 
