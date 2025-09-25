@@ -33,7 +33,8 @@ WORKDIR $APP_HOME
 RUN apk update && apk add --no-cache ca-certificates \
     #libcurl4-openssl-dev \
     curl-dev \
-    libssl-dev \
+    #libssl-dev \
+    openssl-dev \
     ffmpeg 
 
 # Dépendances Python
@@ -52,6 +53,7 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
 
 
 
