@@ -6,7 +6,8 @@ ENV VIRTUAL_ENV=$APP_HOME/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install latest su-exec
-RUN set -ex; \
+RUN apk --no-cache add curl
+    set -ex; \
     curl -o /usr/local/bin/su-exec.c https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c; \
     fetch_deps='gcc libc-dev'; \
     apt-get update; \
@@ -55,4 +56,5 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
+
 
